@@ -1,0 +1,33 @@
+.container{
+	width: 100%;
+	display: flex;
+	justify-content: start;
+}
+.sidebar{
+	width: 15%;
+	background-color: #000;
+}
+
+.inputs{
+	display: flex;
+	flex-direction: column;
+}
+.input{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	color: orange;
+	margin-bottom: 2em;
+}
+.gallery{
+	width: 80%;
+	margin: 10px 2.5%;
+	display: flex;
+	flex-direction: column;
+}
+.galleryArea{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
