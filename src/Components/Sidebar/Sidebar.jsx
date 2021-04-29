@@ -6,7 +6,8 @@ import styles from './Sidebar.module.css';
 class Sidebar extends Component {
 	constructor() {
 		super();
-		this.allPhotosSRC = [];
+		this.isButtonVisible = false;
+		this.allPhotosSRC = [];		
 		this.rover = 'curiosity';
 		this.camera = 'fhaz';
 		this.sol = '';
@@ -45,13 +46,15 @@ class Sidebar extends Component {
 		this.allPhotosSRC = [];		
     	/*const arrSRC = await this.getData();
     	console.log(`after getData ${arrSRC}`);
+    	this.isButtonVisible = arrSRC.length===0 ? false : true;
     	const end = (arrSRC.length<25) ? true : false;    	 
     	this.allPhotosSRC = arrSRC;
     	const arr = this.allPhotosSRC;*/
     	let arrSRC = [];
     	for(let i=0;i<=24;i++){
-    		arrSRC.push(`https://mars.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631160503676E02_DXXX.jpg`);
-    	};    	 	
+    		arrSRC.push(`https://i.redd.it/zf8uugiibym31.jpg`);
+    	};
+    	this.isButtonVisible = arrSRC.length===0 ? false : true;    	 	
     	this.setState({ photosSRC: arrSRC/*,  endPage: end*/});
 	}
 
@@ -71,11 +74,15 @@ class Sidebar extends Component {
 		if (!this.state.endPage){
 			this.page++;
 			//const url = this.getURL();
-			const newArrSRC = await this.getData();
+			/*const newArrSRC = await this.getData();
     		const arr = this.allPhotosSRC.concat(newArrSRC);    		
     		this.allPhotosSRC = arr;
-    		const end = (newArrSRC.length<25) ? true : false;
-    		this.setState({ photosSRC: arr,  endPage: end});
+    		const end = (newArrSRC.length<25) ? true : false;*/
+    		let arr = [];
+    	for(let i=0;i<=24;i++){
+    		arr.push(`https://i.redd.it/zf8uugiibym31.jpg`);
+    	};
+    		this.setState({ photosSRC: arr/*,  endPage: end*/});
 		}		
 	}
 
@@ -88,33 +95,33 @@ class Sidebar extends Component {
 						              <label htmlFor="rover" className={styles.inputLabel}>
 						                Rover:
 						              </label>
-						              <select
-						                className={styles.inputField}
-						                name="rover"
-						                id="rover"
-						                onChange={this.selectRover}
-						              >
-						                <option value="curiosity">Curiosity</option>
-						                <option value="opportunity">Opportunity</option>
-						                <option value="spirit">Spirit</option>			                
-						              </select>
-						              <span className="selector__arrow"></span>
-						            </div>
+						              <div className={styles.inputWrapper}><select
+						              						                className={styles.inputField}
+						              						                name="rover"
+						              						                id="rover"
+						              						                onChange={this.selectRover}
+						              						              >
+						              						                <option value="curiosity">Curiosity</option>
+						              						                <option value="opportunity">Opportunity</option>
+						              						                <option value="spirit">Spirit</option>			                
+						              						              </select>
+						              						              <span className={styles.inputArrow}></span>
+						              						            </div></div>
 			
 						            <div className={styles.input}>
 						              <label htmlFor="rover" className={styles.inputLabel}>
 						                Camera:
 						              </label>
-						              <select
-						                className={styles.inputField}
-						                name="camera"
-						                id="camera"
-						                onChange={this.selectCamera}
-						              >
-						                <option value="fhaz">Front Camera</option>
-						                <option value="rhaz">Rear Camera</option>			                
-						              </select>
-						              <span className="selector__arrow"></span>
+						              <div className={styles.inputWrapper}><select
+						              						                className={styles.inputField}
+						              						                name="camera"
+						              						                id="camera"
+						              						                onChange={this.selectCamera}
+						              						              >
+						              						                <option value="fhaz">Front Camera</option>
+						              						                <option value="rhaz">Rear Camera</option>			                
+						              						              </select>
+						              						              <span className={styles.inputArrow}></span></div>
 						            </div>
 			
 						            <div className={styles.input}>
@@ -139,7 +146,7 @@ class Sidebar extends Component {
             			<Photo src={sorce}  />
           ))}
 					</div>
-					<button onClick={this.getNextPage} className={styles.btnLoad}>Load more</button>
+					<button  onClick={this.getNextPage} className={`${this.isButtonVisible ? styles.btnLoadMore : styles.btnUnvisible}`}>Load more</button>
 				</div>
 			</div>
 			)

@@ -9,6 +9,8 @@
 	.sidebar{
 		width: 60%;
 		margin: 2em auto;
+		display: flex;
+		flex-direction: column;
 		/*padding-left: 1em;*/
 		/*background-image: linear-gradient(#000000, #ff8000);*/
 		align-self: center;
@@ -16,7 +18,7 @@
 	.inputs{
 		display: flex;
 		flex-direction: column;
-
+		width: 200px;
 	}
 	.input{
 		display: flex;
@@ -24,11 +26,88 @@
 		align-items: flex-start;
 		color: orange;
 		margin-bottom: 1em;
+
 	}
+	.inputWrapper{
+		position: relative;
+	}
+	.inputField{
+		width: 200px;
+		font-size: 1em;
+		padding: 5px 15px 5px 5px;
+		/*background-color: #ccffcc;*/
+		color: #000;
+		border: 1px solid orange;
+		/*position: relative;*/
+	}
+	.inputArrow{
+		position: absolute;
+		top: 0;
+		right: 0;
+		background-color: orange;
+		width: 25px;
+		height: 100%;
+		pointer-events: none;
+	}
+	.inputArrow:before,
+	.inputArrow:after{
+		content: '';
+		position: absolute;
+		width: 0;
+		height: 0;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+	.inputArrow:before{
+		border-left: 6px solid transparent;
+		border-right: 6px solid transparent;
+		border-bottom: 6px solid #000;
+		top: 30%;
+	}
+	.inputArrow:after{
+		border-left: 6px solid transparent;
+		border-right: 6px solid transparent;
+		border-top: 6px solid #000;
+		top: 60%;	
+	}
+	.inputLabel{}
+	.btnUnvisible{
+		display: none;
+	}
+	.btnLoad,
+	.btnLoadMore{
+		display: block;
+		width: 150px;
+		padding: 10px 0;	
+		font-size: 16px;	
+		text-align: center;
+		text-decoration: none;	
+		background-color: orange;	
+		color: #000;
+		border: none;
+	  	border-radius: 10px;
+	  	box-shadow: 0 4px gray;
+	  	cursor: pointer;
+		}
+	.btnLoad:hover,
+	.btnLoadMore:hover{
+		background-color: gold;
+	}
+	.btnLoad:active,
+	.btnLoadMore:active{
+		background-color: gold;
+	  box-shadow: 0 1.5px gray;
+	  transform: translateY(2px);
+	}
+	/*.btnLoadMore{
+		display: none;
+	}*/
 	.gallery{
 		width: 90%;
 		margin: 0 auto;
+		margin-bottom: 2em;
 		display: flex;
+		align-items:  center;
 		flex-direction: column;
 	}
 	.galleryArea{
@@ -37,18 +116,26 @@
 		/*flex-direction: column;*/
 		justify-content: center;
 		flex-wrap: wrap;
+		margin-bottom: 2em;
 	}
 }
 @media (min-width: 768px) {
 	.container{	
-		flex-direction: row;
-		padding-top: 2em;	
+		/*flex-direction: row;
+		padding-top: 2em;*/	
 	}
 	.sidebar{
-		width: 30%;
-		margin: 0 0 0 1em;
+		width: 90%;
+		/*margin: 1em auto;*/
 		align-self: flex-start;
+		align-items: center;
 		/*background-image: linear-gradient(#000000, #ff8000);*/
+	}
+	.inputs{
+		/*display: flex;*/
+		width: 100%;
+		flex-direction: row;
+		justify-content: space-between;		
 	}
 	.input{
 		/*margin-bottom: 2em;*/
@@ -66,10 +153,25 @@
 }
 
 @media (min-width: 992px){
+	.container{
+		/*width: 100%;
+		display: flex;*/
+		flex-direction: row;
+		/*justify-content: start;
+		background-image: linear-gradient(#000000, #ff8000);*/
+	}
 	.sidebar{
 		width: 15%;
 		padding-left: 2em;
+		align-items: flex-start;
+		/*align-self: center;*/
 		/*background-image: linear-gradient(#000000, #ff8000);*/
+	}
+	.inputs{
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		width: 200px;
 	}
 }
 
