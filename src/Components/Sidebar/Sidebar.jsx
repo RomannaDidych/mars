@@ -1,188 +1,164 @@
-import React, {Component} from 'react';
-import Photo from './Photo/Photo'
-import styles from './Sidebar.module.css';
-
+import React, { Component } from "react";
+import Photo from "./Photo/Photo";
+import styles from "./Sidebar.module.css";
 
 class Sidebar extends Component {
-	constructor() {
-		super();
-		this.isButtonVisible = false;
-		this.isButtonDisabled = false;
-		this.allPhotosSRC = [];		
-		this.rover = 'curiosity';
-		this.camera = 'fhaz';
-		this.sol = 0;
-		this.page = 1;
-		this.state = {
-			photosSRC: [],			
-			//endPage: false
-		}
+  constructor() {
+    super();
+    this.isTextVisible = false;
+    this.isButtonVisible = false;
+    this.isButtonDisabled = false;
+    this.allPhotosSRC = [];
+    this.rover = "curiosity";
+    this.camera = "fhaz";
+    this.sol = 0;
+    this.page = 1;
+    this.state = {
+      photosSRC: [],
+    };
+  }
 
-	}
+  getURL = () => {
+    const startURL = `https://api.nasa.gov/mars-photos/api/v1/rovers/`;
+    const finishURL = `&api_key=DEMO_KEY`;
+    const camera = `&camera=${this.camera}`;    
+    return `${startURL}${this.rover}/photos?sol=${this.sol}&page=${this.page}&camera=${this.camera}${finishURL}`;
+  };
 
+  getData = async () => {
+    const currentURL = this.getURL();    
+    const response = await fetch(currentURL);
+    const items = await response.json();    
+    const arr = items.photos.map((obj) => obj.img_src);    
+    return arr;
+  };
 
-//https://mars.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631160503676E02_DXXX.jpg 
-//https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&camera=fhaz&api_key=DEMO_KEY 
-	getURL = ()=>{
-		const startURL = `https://api.nasa.gov/mars-photos/api/v1/rovers/`;
-		const finishURL = `&api_key=DEMO_KEY`;
-		const camera = `&camera=${this.camera}`;
-		const str=`${startURL}${this.rover}/photos?sol=${this.sol}&page=${this.page}&camera=${this.camera}${finishURL}`;
-		console.log(str);
-		return `${startURL}${this.rover}/photos?sol=${this.sol}&page=${this.page}&camera=${this.camera}${finishURL}`;
-	}
+  getFirstPage = async () => {
+    this.allPhotosSRC = [];
+    const arrSRC = await this.getData();
+    if (arrSRC.length === 0) {
+      this.isButtonVisible = false;
+      this.isTextVisible = true;
+    } else {
+      this.isButtonVisible = true;
+      this.isTextVisible = false;
+    }
+    this.allPhotosSRC = arrSRC;
+    const arr = this.allPhotosSRC;
+    this.isButtonDisabled = arrSRC.length < 25 ? true : false;
+    await this.setState({ photosSRC: arrSRC });
+  };
 
-	getData = async () => {
-		const currentURL=this.getURL();
-		console.log(currentURL);
-		const response = await fetch(currentURL);
-    	const items = await response.json();    	
-    	console.log(items);
-    	const arr = items.photos.map((obj) => (obj.img_src));
-    	console.log(`intro getData ${arr.length}; ${arr}`);
-    	return arr;
-	}
+  selectCamera = (e) => {
+    this.camera = e.target.value;
+  };
 
-	getFirstPage = async () =>{				
-		this.allPhotosSRC = [];		
-    	const arrSRC = await this.getData();
-    	//console.log(`after getData ${arrSRC}`);
-    	this.isButtonVisible = arrSRC.length===0 ? false : true;
-    	//const end = (arrSRC.length<25) ? true : false;    	 
-    	this.allPhotosSRC = arrSRC;
-    	const arr = this.allPhotosSRC;
-    	/*let arrSRC = [];
-    	for(let i=0;i<=24;i++){
-    		arrSRC.push(`https://i.redd.it/zf8uugiibym31.jpg`);
-    	};*/
+  selectRover = (e) => {
+    this.rover = e.target.value;
+  };
 
-    	//this.isButtonVisible = arrSRC.length===0 ? false : true;
-    	this.isButtonDisabled = (arrSRC.length<25) ? true : false;    	 	
-    	 await this.setState({ photosSRC: arrSRC});
-	}
+  selectSol = (e) => {
+    this.sol = +e.target.value;
+  };
 
-	selectCamera = (e) => {
-		this.camera = e.target.value;
-	}
+  getNextPage = async () => {
+    if (!this.state.endPage) {
+      this.page++;
+      const url = this.getURL();
+      const newArrSRC = await this.getData();      
+      this.isButtonDisabled = newArrSRC.length < 25 ? true : false;
+      const arr = this.allPhotosSRC.concat(newArrSRC);
+      this.allPhotosSRC = arr;
+      await this.setState({ photosSRC: arr });
+    }
+  };
 
-	selectRover = (e) => {
-		this.rover = e.target.value;
-	}
+  render() {
+    return (
+      <div className={styles.container}>
+        <div className={styles.sidebar}>
+          <div className={styles.inputs}>
+            <div className={styles.input}>
+              <label htmlFor="rover" className={styles.inputLabel}>
+                Rover:
+              </label>
+              <div className={styles.inputWrapper}>
+                <select
+                  className={styles.inputField}
+                  name="rover"
+                  id="rover"
+                  onChange={this.selectRover}
+                >
+                  <option value="curiosity">Curiosity</option>
+                  <option value="opportunity">Opportunity</option>
+                  <option value="spirit">Spirit</option>
+                </select>
+                <span className={styles.inputArrow}></span>
+              </div>
+            </div>
 
-	selectSol = (e) =>{
-		this.sol = +e.target.value;
-	}
+            <div className={styles.input}>
+              <label htmlFor="rover" className={styles.inputLabel}>
+                Camera:
+              </label>
+              <div className={styles.inputWrapper}>
+                <select
+                  className={styles.inputField}
+                  name="camera"
+                  id="camera"
+                  onChange={this.selectCamera}
+                >
+                  <option value="fhaz">Front Camera</option>
+                  <option value="rhaz">Rear Camera</option>
+                </select>
+                <span className={styles.inputArrow}></span>
+              </div>
+            </div>
 
-	getNextPage =  async () =>{		
-		if (!this.state.endPage){
-			this.page++;
-			const url = this.getURL();
-			const newArrSRC = await this.getData();
-    		const arr = this.allPhotosSRC.concat(newArrSRC);    		
-    		this.allPhotosSRC = arr;
-    		//const end = (newArrSRC.length<25) ? true : false;
-    		/*let arr = [];
-    	for(let i=0;i<=15;i++){
-    		arr.push(`https://i.redd.it/zf8uugiibym31.jpg`);
-    	};*/
-    	this.isButtonDisabled = (arr.length<25) ? true : false;
-    	const newArr = this.allPhotosSRC.concat(arr);
-    	await this.setState({ photosSRC: arr/*,  endPage: end*/});
-		}		
-	}
-
-	render() {
-		return (
-			<div className={styles.container}>
-				<div className={styles.sidebar}>
-							<div className={styles.inputs}>					
-						            <div className={styles.input}>
-						              <label htmlFor="rover" className={styles.inputLabel}>
-						                Rover:
-						              </label>
-						              <div className={styles.inputWrapper}><select
-						              						                className={styles.inputField}
-						              						                name="rover"
-						              						                id="rover"
-						              						                onChange={this.selectRover}
-						              						              >
-						              						                <option value="curiosity">Curiosity</option>
-						              						                <option value="opportunity">Opportunity</option>
-						              						                <option value="spirit">Spirit</option>			                
-						              						              </select>
-						              						              <span className={styles.inputArrow}></span>
-						              						            </div></div>
-			
-						            <div className={styles.input}>
-						              <label htmlFor="rover" className={styles.inputLabel}>
-						                Camera:
-						              </label>
-						              <div className={styles.inputWrapper}><select
-						              						                className={styles.inputField}
-						              						                name="camera"
-						              						                id="camera"
-						              						                onChange={this.selectCamera}
-						              						              >
-						              						                <option value="fhaz">Front Camera</option>
-						              						                <option value="rhaz">Rear Camera</option>			                
-						              						              </select>
-						              						              <span className={styles.inputArrow}></span></div>
-						            </div>
-			
-						            <div className={styles.input}>
-						              <label htmlFor="sol" className={styles.inputLabel}>
-						                Sol (integer number):
-						              </label>
-						              <input
-						                className={styles.inputField}
-						                name="sol"
-						                id="sol"
-						                type="text"
-						                defaultValue={this.sol}
-						                onChange={this.selectSol}
-						              />			            
-							        </div>
-							</div>
-							<button onClick={this.getFirstPage} className={styles.btnLoad}>Load</button>
-				</div>
-				<div className={styles.gallery}>
-					<div className={styles.galleryArea}>
-						{this.state.photosSRC.map((sorce) => (
-            			<Photo src={sorce}  />
-          ))}
-					</div>
-					<button  onClick={this.getNextPage} className={`${this.isButtonVisible ? styles.btnLoadMore : styles.btnUnvisible}`} disabled={this.isButtonDisabled}>Load more</button>
-				</div>
-			</div>
-			)
-	}
-};
+            <div className={styles.input}>
+              <label htmlFor="sol" className={styles.inputLabel}>
+                Sol (integer number):
+              </label>
+              <input
+                className={styles.inputField}
+                name="sol"
+                id="sol"
+                type="text"
+                defaultValue={this.sol}
+                onChange={this.selectSol}
+              />
+            </div>
+          </div>
+          <button onClick={this.getFirstPage} className={styles.btnLoad}>
+            Load
+          </button>
+        </div>
+        <div className={styles.gallery}>
+          <div className={styles.galleryArea}>
+            {this.state.photosSRC.map((sorce) => (
+              <Photo src={sorce} />
+            ))}
+          </div>
+          <p
+            className={`${
+              this.isTextVisible ? styles.message : styles.messageUnvisible
+            }`}
+          >
+            No photos found! Change your filter parameters!
+          </p>
+          <button
+            onClick={this.getNextPage}
+            className={`${
+              this.isButtonVisible ? styles.btnLoadMore : styles.btnUnvisible
+            }`}
+            disabled={this.isButtonDisabled}
+          >
+            Load more
+          </button>
+        </div>
+      </div>
+    );
+  }
+}
 
 export default Sidebar;
-
-/*const currentURL=this.getURL();
-		console.log(currentURL);
-		const response = await fetch(currentURL);
-    	const items = await response.json();    	
-    	console.log(items);
-    	const arrSRC = items.photos.map((obj) => (obj.img_src));*/
-    	/*let arrSRC = [];
-    	for(let i=0;i<=24;i++){
-    		arrSRC.push(`https://mars.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631160503676E02_DXXX.jpg`);
-    	};*/
-//console.log(arr);
-    	/*return arrSRC;*/   
-
-//console.log(p, pp);
-			/*const currentURL = getURL();
-			const response = await fetch(currentURL);
-    		const items = await response.json();    		
-    		const arrSRC = items.photos.map((obj) => (obj.img_src));*/
-    		/*додати перевірку що масив не пустий*/
-    		/*let newArrSRC = [];
-    	for(let i=0;i<=24;i++){
-    		newArrSRC.push(`https://mars.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631160503676E02_DXXX.jpg`);
-    	};*/
-    		//this.allPhotosSRC.concat(newArrSRC);
-    		//const newArrSRC = await this.getData();
-    		//console.log(newArrSRC);

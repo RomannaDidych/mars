@@ -10,9 +10,7 @@
 		width: 60%;
 		margin: 2em auto;
 		display: flex;
-		flex-direction: column;
-		/*padding-left: 1em;*/
-		/*background-image: linear-gradient(#000000, #ff8000);*/
+		flex-direction: column;		
 		align-self: center;
 	}
 	.inputs{
@@ -26,7 +24,6 @@
 		align-items: flex-start;
 		color: orange;
 		margin-bottom: 1em;
-
 	}
 	.inputWrapper{
 		position: relative;
@@ -34,11 +31,9 @@
 	.inputField{
 		width: 200px;
 		font-size: 1em;
-		padding: 5px 15px 5px 5px;
-		/*background-color: #ccffcc;*/
+		padding: 5px 15px 5px 5px;		
 		color: #000;
-		border: 1px solid orange;
-		/*position: relative;*/
+		border: 1px solid orange;		
 	}
 	.inputArrow{
 		position: absolute;
@@ -111,62 +106,57 @@
 		align-items:  center;
 		flex-direction: column;
 	}
+	.messageUnvisible{
+		display: none;
+	}
+	.message{
+		display: inline-block;
+		font-size: 1em;
+		font-weight: 700;
+		letter-spacing: 2px;
+		color: red;
+		text-align: center;
+	}
 	.galleryArea{
 		width: 100%;
-		display: flex;
-		/*flex-direction: column;*/
+		display: flex;		
 		justify-content: center;
 		flex-wrap: wrap;
 		margin-bottom: 2em;
 	}
 }
-@media (min-width: 768px) {
-	.container{	
-		/*flex-direction: row;
-		padding-top: 2em;*/	
-	}
+@media (min-width: 768px) {	
 	.sidebar{
-		width: 90%;
-		/*margin: 1em auto;*/
+		width: 90%;		
 		align-self: flex-start;
-		align-items: center;
-		/*background-image: linear-gradient(#000000, #ff8000);*/
+		align-items: center;		
 	}
-	.inputs{
-		/*display: flex;*/
+	.inputs{		
 		width: 100%;
 		flex-direction: row;
 		justify-content: space-between;		
-	}
-	.input{
-		/*margin-bottom: 2em;*/
-	}
+	}	
 	.gallery{
 		width: 80%;
 	}
-	.galleryArea{
-		/*width: 100%;
-		display: flex;*/
-		flex-direction: row;
-		/*justify-content: flex-start;*/
+	.message{
+		font-size: 1.6em;
+		letter-spacing: 4px;
+	}
+	.galleryArea{		
+		flex-direction: row;		
 		flex-wrap: wrap;
 	}
 }
 
 @media (min-width: 992px){
-	.container{
-		/*width: 100%;
-		display: flex;*/
-		flex-direction: row;
-		/*justify-content: start;
-		background-image: linear-gradient(#000000, #ff8000);*/
+	.container{		
+		flex-direction: row;		
 	}
 	.sidebar{
 		width: 15%;
 		padding-left: 2em;
-		align-items: flex-start;
-		/*align-self: center;*/
-		/*background-image: linear-gradient(#000000, #ff8000);*/
+		align-items: flex-start;		
 	}
 	.inputs{
 		display: flex;
@@ -174,40 +164,8 @@
 		justify-content: flex-start;
 		width: 200px;
 	}
+	.message{
+		font-size: 2em;
+	}
 }
 
-/*
-
-.container{
-	width: 100%;
-	display: flex;
-	justify-content: start;
-}
-.sidebar{
-	width: 15%;
-	background-image: linear-gradient(#000000, #ff8000);
-}
-
-.inputs{
-	display: flex;
-	flex-direction: column;
-}
-.input{
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	color: orange;
-	margin-bottom: 2em;
-}
-.gallery{
-	width: 80%;
-	margin: 10px auto;
-	display: flex;
-	flex-direction: column;
-}
-.galleryArea{
-	width: 100%;
-	display: flex;
-	justify-content: flex-start;
-	flex-wrap: wrap;
-}*/
