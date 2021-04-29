@@ -7,14 +7,15 @@ class Sidebar extends Component {
 	constructor() {
 		super();
 		this.isButtonVisible = false;
+		this.isButtonDisabled = false;
 		this.allPhotosSRC = [];		
 		this.rover = 'curiosity';
 		this.camera = 'fhaz';
-		this.sol = '';
+		this.sol = 0;
 		this.page = 1;
 		this.state = {
 			photosSRC: [],			
-			endPage: false
+			//endPage: false
 		}
 
 	}
@@ -36,7 +37,7 @@ class Sidebar extends Component {
 		console.log(currentURL);
 		const response = await fetch(currentURL);
     	const items = await response.json();    	
-    	//console.log(items);
+    	console.log(items);
     	const arr = items.photos.map((obj) => (obj.img_src));
     	console.log(`intro getData ${arr.length}; ${arr}`);
     	return arr;
@@ -44,18 +45,20 @@ class Sidebar extends Component {
 
 	getFirstPage = async () =>{				
 		this.allPhotosSRC = [];		
-    	/*const arrSRC = await this.getData();
-    	console.log(`after getData ${arrSRC}`);
+    	const arrSRC = await this.getData();
+    	//console.log(`after getData ${arrSRC}`);
     	this.isButtonVisible = arrSRC.length===0 ? false : true;
-    	const end = (arrSRC.length<25) ? true : false;    	 
+    	//const end = (arrSRC.length<25) ? true : false;    	 
     	this.allPhotosSRC = arrSRC;
-    	const arr = this.allPhotosSRC;*/
-    	let arrSRC = [];
+    	const arr = this.allPhotosSRC;
+    	/*let arrSRC = [];
     	for(let i=0;i<=24;i++){
     		arrSRC.push(`https://i.redd.it/zf8uugiibym31.jpg`);
-    	};
-    	this.isButtonVisible = arrSRC.length===0 ? false : true;    	 	
-    	this.setState({ photosSRC: arrSRC/*,  endPage: end*/});
+    	};*/
+
+    	//this.isButtonVisible = arrSRC.length===0 ? false : true;
+    	this.isButtonDisabled = (arrSRC.length<25) ? true : false;    	 	
+    	 await this.setState({ photosSRC: arrSRC});
 	}
 
 	selectCamera = (e) => {
@@ -73,16 +76,18 @@ class Sidebar extends Component {
 	getNextPage =  async () =>{		
 		if (!this.state.endPage){
 			this.page++;
-			//const url = this.getURL();
-			/*const newArrSRC = await this.getData();
+			const url = this.getURL();
+			const newArrSRC = await this.getData();
     		const arr = this.allPhotosSRC.concat(newArrSRC);    		
     		this.allPhotosSRC = arr;
-    		const end = (newArrSRC.length<25) ? true : false;*/
-    		let arr = [];
-    	for(let i=0;i<=24;i++){
+    		//const end = (newArrSRC.length<25) ? true : false;
+    		/*let arr = [];
+    	for(let i=0;i<=15;i++){
     		arr.push(`https://i.redd.it/zf8uugiibym31.jpg`);
-    	};
-    		this.setState({ photosSRC: arr/*,  endPage: end*/});
+    	};*/
+    	this.isButtonDisabled = (arr.length<25) ? true : false;
+    	const newArr = this.allPhotosSRC.concat(arr);
+    	await this.setState({ photosSRC: arr/*,  endPage: end*/});
 		}		
 	}
 
@@ -146,7 +151,7 @@ class Sidebar extends Component {
             			<Photo src={sorce}  />
           ))}
 					</div>
-					<button  onClick={this.getNextPage} className={`${this.isButtonVisible ? styles.btnLoadMore : styles.btnUnvisible}`}>Load more</button>
+					<button  onClick={this.getNextPage} className={`${this.isButtonVisible ? styles.btnLoadMore : styles.btnUnvisible}`} disabled={this.isButtonDisabled}>Load more</button>
 				</div>
 			</div>
 			)
