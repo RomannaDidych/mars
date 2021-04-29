@@ -8,8 +8,8 @@ class Sidebar extends Component {
 		super();
 		this.allPhotosSRC = [];
 		this.rover = 'curiosity';
-		this.camera = 'fhaz'
-		this.sol = 1000;
+		this.camera = 'fhaz';
+		this.sol = undefined;
 		this.page = 1;
 		this.state = {
 			photosSRC: [],			
@@ -25,50 +25,55 @@ class Sidebar extends Component {
 		const startURL = `https://api.nasa.gov/mars-photos/api/v1/rovers/`;
 		const finishURL = `&api_key=DEMO_KEY`;
 		const camera = `&camera=${this.camera}`;
-		return `${startURL}${this.rover}/photos?sol=${this.sol}&page=${this.page}&camera=${this.camera}${finishURL}`
+		const str=`${startURL}${this.rover}/photos?sol=${this.sol}&page=${this.page}&camera=${this.camera}${finishURL}`;
+		console.log(str);
+		return `${startURL}${this.rover}/photos?sol=${this.sol}&page=${this.page}&camera=${this.camera}${finishURL}`;
 	}
 
-	getFirstPage = async () =>{
-		this.allPhotosSRC = [];		
-		/*const currentURL=this.getURL();
+	getData = async () => {
+		const currentURL=this.getURL();
 		console.log(currentURL);
 		const response = await fetch(currentURL);
     	const items = await response.json();    	
-    	console.log(items);
-    	const arrSRC = items.photos.map((obj) => (obj.img_src));*/
-    	let arrSRC = [];
-    	for(let i=0;i<=24;i++){
-    		arrSRC.push(`https://mars.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631160503676E02_DXXX.jpg`);
-    	};
+    	//console.log(items);
+    	const arr = items.photos.map((obj) => (obj.img_src));
+    	console.log(`intro getData ${arr.length}; ${arr}`);
+    	return arr;
+	}
+
+	getFirstPage = async () =>{		
+		this.allPhotosSRC = [];
+		//const url = this.getURL();
+		
+    	const arrSRC = await this.getData();
+    	console.log(`after getData ${arrSRC}`);
     	const end = (arrSRC.length<25) ? true : false;    	 
-    	this.allPhotosSRC = [...arrSRC];
-    	const arr = this.allPhotosSRC;
-    	console.log(arr);
-    	/*return arrSRC;*/    	
+    	this.allPhotosSRC = arrSRC;
+    	//const arr = this.allPhotosSRC;
+    	 	
     	this.setState({ photosSRC: arrSRC,  endPage: end});
 	}
 
-	selectCamera = (e) => {}
+	selectCamera = (e) => {
+		this.camera = e.target.value;
+	}
 
-	selectRover = (e) => {}
+	selectRover = (e) => {
+		this.rover = e.target.value;
+	}
 
-	selectSol = (e) =>{}
+	selectSol = (e) =>{
+		this.sol = +e.target.value;
+	}
 
-	getNextPage = () =>{		
+	getNextPage =  async () =>{		
 		if (!this.state.endPage){
 			this.page++;
-			/*const currentURL = getURL();
-			const response = await fetch(currentURL);
-    		const items = await response.json();    		
-    		const arrSRC = items.photos.map((obj) => (obj.img_src));*/
-    		/*додати перевірку що масив не пустий*/
-    		let arrSRC = [];
-    	for(let i=0;i<=24;i++){
-    		arrSRC.push(`https://mars.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631160503676E02_DXXX.jpg`);
-    	};
-    		this.allPhotosSRC.concat(arrSRC);
-    		const arr = this.allPhotosSRC;
-    		const end = (arrSRC.length<25) ? true : false;
+			//const url = this.getURL();
+			const newArrSRC = await this.getData();
+    		const arr = this.allPhotosSRC.concat(newArrSRC);    		
+    		this.allPhotosSRC = arr;
+    		const end = (newArrSRC.length<25) ? true : false;
     		this.setState({ photosSRC: arr,  endPage: end});
 		}		
 	}
@@ -141,3 +146,30 @@ class Sidebar extends Component {
 };
 
 export default Sidebar;
+
+/*const currentURL=this.getURL();
+		console.log(currentURL);
+		const response = await fetch(currentURL);
+    	const items = await response.json();    	
+    	console.log(items);
+    	const arrSRC = items.photos.map((obj) => (obj.img_src));*/
+    	/*let arrSRC = [];
+    	for(let i=0;i<=24;i++){
+    		arrSRC.push(`https://mars.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631160503676E02_DXXX.jpg`);
+    	};*/
+//console.log(arr);
+    	/*return arrSRC;*/   
+
+//console.log(p, pp);
+			/*const currentURL = getURL();
+			const response = await fetch(currentURL);
+    		const items = await response.json();    		
+    		const arrSRC = items.photos.map((obj) => (obj.img_src));*/
+    		/*додати перевірку що масив не пустий*/
+    		/*let newArrSRC = [];
+    	for(let i=0;i<=24;i++){
+    		newArrSRC.push(`https://mars.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631160503676E02_DXXX.jpg`);
+    	};*/
+    		//this.allPhotosSRC.concat(newArrSRC);
+    		//const newArrSRC = await this.getData();
+    		//console.log(newArrSRC);
