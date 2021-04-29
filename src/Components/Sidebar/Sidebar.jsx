@@ -9,7 +9,7 @@ class Sidebar extends Component {
 		this.allPhotosSRC = [];
 		this.rover = 'curiosity';
 		this.camera = 'fhaz';
-		this.sol = undefined;
+		this.sol = '';
 		this.page = 1;
 		this.state = {
 			photosSRC: [],			
@@ -41,17 +41,18 @@ class Sidebar extends Component {
     	return arr;
 	}
 
-	getFirstPage = async () =>{		
-		this.allPhotosSRC = [];
-		//const url = this.getURL();
-		
-    	const arrSRC = await this.getData();
+	getFirstPage = async () =>{				
+		this.allPhotosSRC = [];		
+    	/*const arrSRC = await this.getData();
     	console.log(`after getData ${arrSRC}`);
     	const end = (arrSRC.length<25) ? true : false;    	 
     	this.allPhotosSRC = arrSRC;
-    	//const arr = this.allPhotosSRC;
-    	 	
-    	this.setState({ photosSRC: arrSRC,  endPage: end});
+    	const arr = this.allPhotosSRC;*/
+    	let arrSRC = [];
+    	for(let i=0;i<=24;i++){
+    		arrSRC.push(`https://mars.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631160503676E02_DXXX.jpg`);
+    	};    	 	
+    	this.setState({ photosSRC: arrSRC/*,  endPage: end*/});
 	}
 
 	selectCamera = (e) => {
@@ -118,14 +119,14 @@ class Sidebar extends Component {
 			
 						            <div className={styles.input}>
 						              <label htmlFor="sol" className={styles.inputLabel}>
-						                Marsian day (integer number):
+						                Sol (integer number):
 						              </label>
 						              <input
 						                className={styles.inputField}
 						                name="sol"
 						                id="sol"
 						                type="text"
-						                value={this.sol}
+						                defaultValue={this.sol}
 						                onChange={this.selectSol}
 						              />			            
 							        </div>

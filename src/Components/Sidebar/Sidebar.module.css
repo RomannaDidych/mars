@@ -1,3 +1,80 @@
+@media (min-width: 320px) {
+	.container{
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: start;
+		background-image: linear-gradient(#000000, #ff8000);
+	}
+	.sidebar{
+		width: 60%;
+		margin: 2em auto;
+		/*padding-left: 1em;*/
+		/*background-image: linear-gradient(#000000, #ff8000);*/
+		align-self: center;
+	}
+	.inputs{
+		display: flex;
+		flex-direction: column;
+
+	}
+	.input{
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		color: orange;
+		margin-bottom: 1em;
+	}
+	.gallery{
+		width: 90%;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+	}
+	.galleryArea{
+		width: 100%;
+		display: flex;
+		/*flex-direction: column;*/
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+}
+@media (min-width: 768px) {
+	.container{	
+		flex-direction: row;
+		padding-top: 2em;	
+	}
+	.sidebar{
+		width: 30%;
+		margin: 0 0 0 1em;
+		align-self: flex-start;
+		/*background-image: linear-gradient(#000000, #ff8000);*/
+	}
+	.input{
+		/*margin-bottom: 2em;*/
+	}
+	.gallery{
+		width: 80%;
+	}
+	.galleryArea{
+		/*width: 100%;
+		display: flex;*/
+		flex-direction: row;
+		/*justify-content: flex-start;*/
+		flex-wrap: wrap;
+	}
+}
+
+@media (min-width: 992px){
+	.sidebar{
+		width: 15%;
+		padding-left: 2em;
+		/*background-image: linear-gradient(#000000, #ff8000);*/
+	}
+}
+
+/*
+
 .container{
 	width: 100%;
 	display: flex;
@@ -21,13 +98,13 @@
 }
 .gallery{
 	width: 80%;
-	margin: 10px 2.5%;
+	margin: 10px auto;
 	display: flex;
 	flex-direction: column;
 }
 .galleryArea{
 	width: 100%;
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-start;
 	flex-wrap: wrap;
-}
+}*/

@@ -1,9 +1,31 @@
-.photo{
+@media (min-width: 320px){
+	.photo{
+		width: 35%;
+		padding: 5px;
+		background-color: gray;
+		margin: .3em;
+	}
+	.img{
+		max-width: 100%;
+	}
+}
+@media (min-width: 768px){
+	.photo{
+		width: 25%;
+	}
+}
+@media (min-width: 992px){
+	.photo{
+		width: 18%;
+	}
+}
+
+/*.photo{
 	width: 18%;
 	padding: 5px;
 	background-color: gray;
-	margin-bottom: 5px;
+	margin: .3em;
 }
 .img{
 	max-width: 100%;
-}
+}*/
