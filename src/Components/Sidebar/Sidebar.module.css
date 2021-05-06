@@ -33,7 +33,10 @@
 		font-size: 1em;
 		padding: 5px 15px 5px 5px;		
 		color: #000;
-		border: 1px solid orange;		
+		border: 1px solid orange;				
+	}	
+	.inputField:focus{
+		outline: 1px solid orange;
 	}
 	.inputArrow{
 		position: absolute;
@@ -65,7 +68,15 @@
 		border-top: 6px solid #000;
 		top: 60%;	
 	}
-	.inputLabel{}
+	/*.inputLabel{}*/
+	input[type=number]{
+		-moz-appearance: textfield;
+	}
+	input[type=number]::-webkit-inner-spin-button, 
+	input[type=number]::-webkit-outer-spin-button { 
+  		-webkit-appearance: none;  		 
+	 	margin: 0;
+	}
 	.btnUnvisible{
 		display: none;
 	}

@@ -123,7 +123,7 @@ class Sidebar extends Component {
                 className={styles.inputField}
                 name="sol"
                 id="sol"
-                type="text"
+                type="number"
                 defaultValue={this.sol}
                 onChange={this.selectSol}
               />
