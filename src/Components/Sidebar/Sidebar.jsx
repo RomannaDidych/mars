@@ -5,31 +5,30 @@ import styles from "./Sidebar.module.css";
 class Sidebar extends Component {
   constructor() {
     super();
-    this.isTextVisible = false;
-    this.isButtonVisible = false;
-    this.isButtonDisabled = false;
     this.allPhotosSRC = [];
-    this.rover = "curiosity";
-    this.camera = "fhaz";
-    this.sol = 0;
     this.page = 1;
     this.state = {
       photosSRC: [],
+      rover: "curiosity",
+      camera: "fhaz",
+      sol: 0,
+      isTextVisible: false,
+      isButtonVisible: false,
+      isButtonDisabled: false,
     };
   }
 
   getURL = () => {
     const startURL = `https://api.nasa.gov/mars-photos/api/v1/rovers/`;
     const finishURL = `&api_key=DEMO_KEY`;
-    const camera = `&camera=${this.camera}`;    
-    return `${startURL}${this.rover}/photos?sol=${this.sol}&page=${this.page}&camera=${this.camera}${finishURL}`;
+    return `${startURL}${this.state.rover}/photos?sol=${this.state.sol}&page=${this.page}&camera=${this.state.camera}${finishURL}`;
   };
 
   getData = async () => {
-    const currentURL = this.getURL();    
+    const currentURL = this.getURL();
     const response = await fetch(currentURL);
-    const items = await response.json();    
-    const arr = items.photos.map((obj) => obj.img_src);    
+    const items = await response.json();
+    const arr = items.photos.map((obj) => obj.img_src);
     return arr;
   };
 
@@ -37,39 +36,38 @@ class Sidebar extends Component {
     this.allPhotosSRC = [];
     const arrSRC = await this.getData();
     if (arrSRC.length === 0) {
-      this.isButtonVisible = false;
-      this.isTextVisible = true;
+      await this.setState({ isTextVisible: true, isButtonVisible: false });
     } else {
-      this.isButtonVisible = true;
-      this.isTextVisible = false;
+      await this.setState({ isTextVisible: false, isButtonVisible: true });
     }
     this.allPhotosSRC = arrSRC;
     const arr = this.allPhotosSRC;
-    this.isButtonDisabled = arrSRC.length < 25 ? true : false;
-    await this.setState({ photosSRC: arrSRC });
+    const condition = arrSRC.length < 25 ? true : false;
+    await this.setState({ photosSRC: arrSRC, isButtonDisabled: condition });
   };
 
-  selectCamera = (e) => {
-    this.camera = e.target.value;
+  selectCamera = async (e) => {
+    await this.setState({ camera: e.target.value });
   };
 
-  selectRover = (e) => {
-    this.rover = e.target.value;
+  selectRover = async (e) => {
+    await this.setState({ rover: e.target.value });
   };
 
-  selectSol = (e) => {
-    this.sol = +e.target.value;
+  selectSol = async (e) => {
+    const number = +e.target.value;
+    await this.setState({ sol: number });
   };
 
   getNextPage = async () => {
     if (!this.state.endPage) {
       this.page++;
       const url = this.getURL();
-      const newArrSRC = await this.getData();      
-      this.isButtonDisabled = newArrSRC.length < 25 ? true : false;
+      const newArrSRC = await this.getData();
       const arr = this.allPhotosSRC.concat(newArrSRC);
       this.allPhotosSRC = arr;
-      await this.setState({ photosSRC: arr });
+      const condition = newArrSRC.length < 25 ? true : false;
+      await this.setState({ photosSRC: arr, isButtonDisabled: condition });
     }
   };
 
@@ -98,7 +96,7 @@ class Sidebar extends Component {
             </div>
 
             <div className={styles.input}>
-              <label htmlFor="rover" className={styles.inputLabel}>
+              <label htmlFor="camera" className={styles.inputLabel}>
                 Camera:
               </label>
               <div className={styles.inputWrapper}>
@@ -124,7 +122,7 @@ class Sidebar extends Component {
                 name="sol"
                 id="sol"
                 type="number"
-                defaultValue={this.sol}
+                defaultValue={this.state.sol}
                 onChange={this.selectSol}
               />
             </div>
@@ -141,7 +139,9 @@ class Sidebar extends Component {
           </div>
           <p
             className={`${
-              this.isTextVisible ? styles.message : styles.messageUnvisible
+              this.state.isTextVisible
+                ? styles.message
+                : styles.messageUnvisible
             }`}
           >
             No photos found! Change your filter parameters!
@@ -149,9 +149,11 @@ class Sidebar extends Component {
           <button
             onClick={this.getNextPage}
             className={`${
-              this.isButtonVisible ? styles.btnLoadMore : styles.btnUnvisible
+              this.state.isButtonVisible
+                ? styles.btnLoadMore
+                : styles.btnUnvisible
             }`}
-            disabled={this.isButtonDisabled}
+            disabled={this.state.isButtonDisabled}
           >
             Load more
           </button>
