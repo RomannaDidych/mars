@@ -6,7 +6,7 @@
 		justify-content: start;
 		background-image: linear-gradient(#000000, #ff8000);
 	}
-	.sidebar{
+	.formInput{
 		width: 60%;
 		margin: 2em auto;
 		display: flex;
@@ -137,7 +137,7 @@
 	}
 }
 @media (min-width: 768px) {	
-	.sidebar{
+	.formInput{
 		width: 90%;		
 		align-self: flex-start;
 		align-items: center;		
@@ -164,7 +164,7 @@
 	.container{		
 		flex-direction: row;		
 	}
-	.sidebar{
+	.formInput{
 		width: 15%;
 		padding-left: 2em;
 		align-items: flex-start;		

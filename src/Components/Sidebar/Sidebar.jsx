@@ -32,7 +32,8 @@ class Sidebar extends Component {
     return arr;
   };
 
-  getFirstPage = async () => {
+  getFirstPage = async (e) => {
+  	e.preventDefault();
     this.allPhotosSRC = [];
     const arrSRC = await this.getData();
     if (arrSRC.length === 0) {
@@ -74,7 +75,7 @@ class Sidebar extends Component {
   render() {
     return (
       <div className={styles.container}>
-        <div className={styles.sidebar}>
+        <form className={styles.formInput} onSubmit={this.getFirstPage}>
           <div className={styles.inputs}>
             <div className={styles.input}>
               <label htmlFor="rover" className={styles.inputLabel}>
@@ -127,10 +128,10 @@ class Sidebar extends Component {
               />
             </div>
           </div>
-          <button onClick={this.getFirstPage} className={styles.btnLoad}>
+          <button type="submit"  className={styles.btnLoad}>
             Load
           </button>
-        </div>
+        </form>
         <div className={styles.gallery}>
           <div className={styles.galleryArea}>
             {this.state.photosSRC.map((sorce) => (
@@ -164,3 +165,5 @@ class Sidebar extends Component {
 }
 
 export default Sidebar;
+
+//onClick={this.getFirstPage}
