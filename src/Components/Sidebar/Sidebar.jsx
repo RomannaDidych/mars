@@ -11,7 +11,7 @@ class Sidebar extends Component {
       photosSRC: [],
       rover: "curiosity",
       camera: "fhaz",
-      sol: 0,
+      sol: '',
       isTextVisible: false,
       isButtonVisible: false,
       isButtonDisabled: false,
@@ -41,8 +41,7 @@ class Sidebar extends Component {
     } else {
       await this.setState({ isTextVisible: false, isButtonVisible: true });
     }
-    this.allPhotosSRC = arrSRC;
-    const arr = this.allPhotosSRC;
+    this.allPhotosSRC = arrSRC;    
     const condition = arrSRC.length < 25 ? true : false;
     await this.setState({ photosSRC: arrSRC, isButtonDisabled: condition });
   };
@@ -56,14 +55,16 @@ class Sidebar extends Component {
   };
 
   selectSol = async (e) => {
-    const number = +e.target.value;
-    await this.setState({ sol: number });
+    let number = +e.target.value;       
+   if(Number.isNaN(number)){
+    	number = this.state.sol;    	
+    };
+    await this.setState({ sol: number }); 
   };
 
   getNextPage = async () => {
     if (!this.state.endPage) {
-      this.page++;
-      const url = this.getURL();
+      this.page++;      
       const newArrSRC = await this.getData();
       const arr = this.allPhotosSRC.concat(newArrSRC);
       this.allPhotosSRC = arr;
@@ -122,8 +123,8 @@ class Sidebar extends Component {
                 className={styles.inputField}
                 name="sol"
                 id="sol"
-                type="number"
-                defaultValue={this.state.sol}
+                type="text"
+                value={this.state.sol}
                 onChange={this.selectSol}
               />
             </div>
